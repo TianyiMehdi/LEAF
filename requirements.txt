@@ -1,5 +1,4 @@
-# 与 docker/environment.yaml 中的 pip 依赖一致
-# 用法：conda create -n bmpc python=3.11 -y && conda activate bmpc && pip install -r requirements.txt
+# conda create -n bmpc python=3.11 -y && conda activate bmpc && pip install -r requirements.txt
 
 --extra-index-url https://download.pytorch.org/whl/cu128
 torch

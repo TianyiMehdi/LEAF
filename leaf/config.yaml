@@ -1,0 +1,118 @@
+defaults:
+    - override hydra/launcher: submitit_local
+
+# environment
+# task: humanoid_h1hand-pole-v0
+task: humanoid-run
+# humanoid-stand humanoid-walk humanoid-run dog-stand dog-walk dog-trot dog-run    
+# task: dog-run
+obs: state
+
+# evaluation
+checkpoint: ???
+eval_episodes: 10
+eval_freq: 50000
+entropy_est_interval: 20000  # GMM policy entropy estimation and wandb log interval (steps)
+
+# Keep these true: they select the existing LEAF value-learning and actor behavior.
+bmpc: true
+flow: true
+## logging
+use_tensorboard: true
+eval_pi: true
+## value learning
+use_v_instead_q: true # using V with model-based TD-learning / using Q with model-free TD-learning 
+td_horizon: 1
+## lazy reanalyze
+reanalyze_interval: 10
+reanalyze_batch_size: 20 # samples that will be reanalyzed in a batch (should <= batch_size)
+reanalyze_horizon: 3
+## explore when reanalyze
+expl_log_std_min: -2
+expl_log_std_max: 1
+exp_name: leaf
+
+# training
+steps: 1_000_000
+checkpoint_save_freq: 100000
+batch_size: 256
+reward_coef: 0.1
+value_coef: 0.1
+consistency_coef: 20
+rho: 0.5
+lr: 3e-4
+enc_lr_scale: 0.3
+grad_clip_norm: 20
+tau: 0.01
+discount_denom: 5
+discount_min: 0.95
+discount_max: 0.995
+buffer_size: 1_000_000
+data_dir: ???
+
+# planning
+mpc: true
+iterations: 6
+num_samples: 512
+num_elites: 64
+num_pi_trajs: 24
+horizon: 3
+min_std: 0.05
+max_std: 2
+temperature: 0.5
+
+# actor
+log_std_min: -3
+log_std_max: 1
+entropy_coef: 1e-4
+num_flow_steps: 2
+topk_flow: 10
+flow_value_weight: true  # false = flow_loss uses mean over topk_flow; true = softmax(value)-weighted sum
+use_score_guidance: false
+score_guidance_coef: 0.1
+
+# critic
+num_bins: 101
+vmin: -10
+vmax: +10
+
+# architecture
+model_size: ???
+num_enc_layers: 2
+enc_dim: 256
+num_channels: 32
+mlp_dim: 512
+latent_dim: 512
+task_dim: 96
+num_q: 2
+dropout: 0.01
+simnorm_dim: 8
+
+# logging
+wandb_project: LEAF
+wandb_entity: none
+wandb_silent: false
+enable_wandb: false
+save_csv: true
+
+# misc
+save_video: false
+save_agent: true
+seed: 2
+
+# convenience
+work_dir: ???
+task_title: ???
+multitask: ???
+tasks: ???
+obs_shape: ???
+action_dim: ???
+episode_length: ???
+obs_shapes: ???
+action_dims: ???
+episode_lengths: ???
+seed_steps: ???
+bin_size: ???
+
+# speedups
+compile: false
